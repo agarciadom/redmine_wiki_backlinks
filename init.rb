@@ -1,8 +1,8 @@
 Redmine::Plugin.register :wiki_links do
   name 'Wiki Links plugin'
-  author 'Author name'
-  description 'This is a plugin for Redmine'
+  author 'Antonio Garcia-Dominguez'
+  description 'Wiki link management for Redmine'
   version '0.0.1'
-  url 'http://example.com/path/to/plugin'
-  author_url 'http://example.com/about'
+  url 'http://github.com/bluezio/wiki_links'
+  author_url 'http://neptuno.uca.es/~agarcia'
 end
