@@ -1,3 +1,9 @@
+Rails.configuration.to_prepare do
+  unless WikiContent.included_modules.include?(WikiLinksWikiContentPatch)
+    WikiContent.send(:include, WikiLinksWikiContentPatch)
+  end
+end
+
 Redmine::Plugin.register :wiki_links do
   name 'Wiki Links plugin'
   author 'Antonio Garcia-Dominguez'
