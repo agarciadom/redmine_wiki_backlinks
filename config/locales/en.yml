@@ -1,3 +1,11 @@
 # English strings go here for Rails i18n
 en:
-  # my_label: "My label"
+  wiki_links_from_here: "Links from this page"
+  wiki_links_to_here: "Links to this page"
+  wiki_links_orphan_pages: "List orphan pages"
+  wiki_links_wanted_pages: "List wanted pages"
+
+  label_links_from: "Links from %{value}"
+  label_links_to: "Links to %{value}"
+  label_orphan: "Orphan pages"
+  label_wanted: "Wanted pages"
