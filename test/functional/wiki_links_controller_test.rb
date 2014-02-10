@@ -1,8 +1,190 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class WikiLinksControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  fixtures :projects, :enabled_modules,
+           :users, :members, :member_roles, :roles,
+           :wikis
+
+  def setup
+    @project = Project.find(1)
+    @wiki = @project.wiki
+
+    @page = add_page @wiki, 'Wiki', 'Start here'
+    @wiki.start_page = @page.title
+    assert @wiki.save
   end
+
+  def test_links_from_noauth_login
+    get :links_from, {
+      :project_id => @project.id,
+      :page_id => @page.id
+    }
+
+    # user is sent to /login
+    assert_response :redirect
+  end
+
+  def test_links_from_auth_forbidden
+    login_as "jsmith"
+
+    get :links_from, {
+      :project_id => @project.id,
+      :page_id => @page.id
+    }
+
+    assert_response 403
+  end
+
+  def test_links_from_noauth_public_empty
+    role_allow "Anonymous", :view_wiki_links
+
+    get :links_from, {
+      :project_id => @project.id,
+      :page_id => @page.title
+    }
+
+    assert_response :success
+    assert_equal assigns(:link_pages), []
+    assert_select "p.nodata", 1
+  end
+
+  def test_links_from_noauth_public_two
+    login_as "jsmith"
+    role_allow "Manager", :view_wiki_links
+    update_page @page, "[[A page]]\nAnother [[Page]]"
+
+    get :links_from, {
+      :project_id => @project.id,
+      :page_id => @page.title
+    }
+
+    assert_response :success
+    assert_equal [{"pretty" => "A page", "ugly" => "A_page"},
+                  {"pretty" => "Page", "ugly" => "Page"}], assigns(:link_pages)
+    assert_select "ul.wiki_links > li", 2
+  end
+
+  def test_links_to_noauth_login
+    get :links_to, {
+      :project_id => @project.id,
+      :page_id => @page.title
+    }
+
+    assert_response :redirect
+  end
+
+  def test_links_to_auth_forbidden
+    login_as "jsmith"
+
+    get :links_to, {
+      :project_id => @project.id,
+      :page_id => @page.title
+    }
+
+    assert_response 403
+  end
+
+  def test_links_to_noauth_public_empty
+    role_allow "Anonymous", :view_wiki_links
+
+    get :links_to, {
+      :project_id => @project.id,
+      :page_id => @page.title
+    }
+
+    assert_response :success
+    assert_equal [], assigns(:link_pages)
+    assert_select "p.nodata", 1
+  end
+
+  def test_links_to_noauth_public_empty
+    role_allow "Manager", :view_wiki_links
+    login_as "jsmith"
+
+    update_page @page, 'Link to [[another page]]'
+    new_page = add_page @wiki, 'Another_page'
+
+    get :links_to, {
+      :project_id => @project.id,
+      :page_id => new_page.title
+    }
+
+    assert_response :success
+    assert_equal [{"pretty" => @page.title, "ugly" => @page.title}], assigns(:link_pages)
+    assert_select "ul.wiki_links > li", 1
+  end
+
+  def test_orphan_noauth_login
+    get :orphan, :project_id => @project.id
+    assert_response :redirect
+  end
+
+  def test_orphan_auth_forbidden
+    login_as "jsmith"
+    get :orphan, :project_id => @project.id
+    assert_response 403
+  end
+
+  def test_orphan_noauth_public_empty
+    role_allow "Anonymous", :view_wiki_links
+    get :orphan, :project_id => @project.id
+
+    assert_response :success
+    assert_equal [], assigns(:link_pages)
+    assert_select "p.nodata", 1
+  end
+
+  def test_orphan_auth_notempty
+    role_allow "Manager", :view_wiki_links
+    login_as "jsmith"
+    add_page @wiki, 'Orphan'
+
+    get :orphan, :project_id => @project.id
+
+    assert_response :success
+    assert_equal [{"ugly" => "Orphan", "pretty"=> "Orphan"}], assigns(:link_pages)
+    assert_select "ul.wiki_links > li", 1
+  end
+
+  def test_wanted_noauth_login
+    get :wanted, :project_id => @project.id
+    assert_response :redirect
+  end
+
+  def test_wanted_auth_forbidden
+    login_as "jsmith"
+    get :wanted, :project_id => @project.id
+    assert_response 403
+  end
+
+  def test_wanted_noauth_public_empty
+    role_allow "Anonymous", :view_wiki_links
+    get :wanted, :project_id => @project.id
+    assert_response :success
+    assert_equal [], assigns(:link_pages)
+    assert_select "p.nodata", 1
+  end
+
+  def test_wanted_auth_notempty
+    role_allow "Manager", :view_wiki_links
+    login_as "jsmith"
+    update_page @page, 'This page should link to [[something]]'
+
+    get :wanted, :project_id => @project.id
+    assert_response :success
+    assert_equal [{"ugly" => "Something", "pretty" =>"Something"}], assigns(:link_pages)
+    assert_select "ul.wiki_links > li", 1
+  end
+
+  # PRIVATE ####################################################################
+
+  def login_as(login)
+    uid = User.find_by_login(login).id
+    @request.session[:user_id] = uid or raise "No user with name '#{name}'"
+  end
+
+  def role_allow(role_name, permission)
+    Role.find_by_name(role_name).add_permission! permission
+  end
+
 end

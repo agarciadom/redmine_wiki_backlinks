@@ -8,7 +8,7 @@
 <p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
 
-<ul>
+<ul class="wiki_links">
 <% @link_pages.each do |l| %>
 <li><%= link_to l[:pretty].html_safe, {:controller => 'wiki', :action => 'show', :id => l[:ugly]} %></li>
 <% end %>
