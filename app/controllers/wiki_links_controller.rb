@@ -15,9 +15,9 @@ class WikiLinksController < ApplicationController
     # We prettify the title without loading the page itself,
     # and then sort by the pretty title.
     @link_pages = WikiLink.where(:from_page_id => @page.id)
-                          .select(:to_page_name)
+                          .select(:to_page_title)
                           .all
-                          .collect{|x| _title_versions(x[:to_page_name])}
+                          .collect{|x| _title_versions(x[:to_page_title])}
                           .sort{|x, y| x[:pretty] <=> y[:pretty]}
   end
 
@@ -26,7 +26,7 @@ class WikiLinksController < ApplicationController
 
     # Obtain the ids of all the pages that link to this one
     ids_to = WikiLink.where(:wiki_id => @project.wiki.id)
-                     .where(:to_page_name => Wiki.titleize(@page.title))
+                     .where(:to_page_title => Wiki.titleize(@page.title))
                      .select("DISTINCT from_page_id")
                      .map(&:from_page_id)
 
@@ -54,8 +54,8 @@ class WikiLinksController < ApplicationController
 
   def _existing_targets(wiki)
     WikiLink.where(:wiki_id => @project.wiki.id)
-      .select("DISTINCT to_page_name")
-      .map(&:to_page_name).to_set
+      .select("DISTINCT to_page_title")
+      .map(&:to_page_title).to_set
   end
 
   def _available_pages(wiki)

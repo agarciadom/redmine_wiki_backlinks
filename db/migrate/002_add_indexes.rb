@@ -7,6 +7,6 @@ class AddIndexes < ActiveRecord::Migration
     add_index :wiki_links, :from_page_id
 
     # By wiki + destination page, for finding incoming links
-    add_index :wiki_links, [:wiki_id, :to_page_name]
+    add_index :wiki_links, [:wiki_id, :to_page_title]
   end
 end

@@ -22,12 +22,12 @@ class WikiLinkTest < ActiveSupport::TestCase
   end
 
   def test_link_without_wiki_is_rejected
-    l = WikiLink.new(:page => @page, :to_page_name => 'Example')
+    l = WikiLink.new(:page => @page, :to_page_title => 'Example')
     assert l.invalid?, "Link with no wiki should be rejected"
   end
 
   def test_link_without_source_is_rejected
-    l = WikiLink.new(:wiki => @wiki, :to_page_name => 'Example')
+    l = WikiLink.new(:wiki => @wiki, :to_page_title => 'Example')
     assert l.invalid?, "Link with no source page should be rejected"
   end
 
@@ -37,7 +37,7 @@ class WikiLinkTest < ActiveSupport::TestCase
   end
 
   def test_valid_link
-    l = WikiLink.new(:wiki => @wiki, :page => @page, :to_page_name => 'Example')
+    l = WikiLink.new(:wiki => @wiki, :page => @page, :to_page_title => 'Example')
     assert l.save, "Valid link can be saved"
   end
 
@@ -84,7 +84,7 @@ class WikiLinkTest < ActiveSupport::TestCase
   def test_populate_remove_manual
     @page = WikiPage.find(1)
     WikiLink.update_from_content(@page.content)
-    assert_equal @page.wiki_links.first.to_page_name, "Documentation"
+    assert_equal @page.wiki_links.first.to_page_title, "Documentation"
 
     WikiLink.remove_from_page(@page)
     assert @page.wiki_links.all.empty?
@@ -98,7 +98,7 @@ class WikiLinkTest < ActiveSupport::TestCase
     assert new_content.save
 
     # A new link should have been created
-    assert_equal new_page.wiki_links.first.to_page_name, "New_link"
+    assert_equal new_page.wiki_links.first.to_page_title, "New_link"
     assert !WikiLink.where(:from_page_id => new_page.id).all.empty?
 
     # After the page is destroyed, the link should not exist anymore
@@ -114,7 +114,7 @@ class WikiLinkTest < ActiveSupport::TestCase
     assert new_content.save
 
     # A new link should have been created
-    assert_equal new_page.wiki_links.first.to_page_name, "New_link"
+    assert_equal new_page.wiki_links.first.to_page_title, "New_link"
     assert !WikiLink.where(:from_page_id => new_page.id).all.empty?
 
     # After the page is destroyed, the link should not exist anymore
@@ -134,7 +134,7 @@ class WikiLinkTest < ActiveSupport::TestCase
     assert new_content.save
 
     # There should only be the new link
-    assert_equal new_page.wiki_links.first.to_page_name,
+    assert_equal new_page.wiki_links.first.to_page_title,
                  "Another_link", "There should only be the new link"
   end
 

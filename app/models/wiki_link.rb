@@ -8,7 +8,7 @@ class WikiLink < ActiveRecord::Base
   belongs_to :wiki
   belongs_to :page, :class_name => 'WikiPage', :foreign_key => 'from_page_id'
 
-  validates_presence_of :wiki_id, :from_page_id, :to_page_name
+  validates_presence_of :wiki_id, :from_page_id, :to_page_title
 
   def self.update_from_content(content)
     page = content.page
@@ -20,7 +20,7 @@ class WikiLink < ActiveRecord::Base
     linked_pages.each do |p|
       link = WikiLink.new(:wiki => wiki,
                           :page => page,
-                          :to_page_name => Wiki.titleize(p))
+                          :to_page_title => Wiki.titleize(p))
       link.save
     end
   end
