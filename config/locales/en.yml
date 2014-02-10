@@ -9,3 +9,5 @@ en:
   label_links_to: "Links to %{value}"
   label_orphan: "Orphan pages"
   label_wanted: "Wanted pages"
+
+  permission_view_wiki_links: "View wiki links"

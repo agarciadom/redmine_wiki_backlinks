@@ -1,7 +1,11 @@
-<h2><%= l(:label_links_from, :value => @page.title) %></h2>
+<h2><%= l(:label_links_from, :value => @page.pretty_title) %></h2>
 
 <% content_for :sidebar do %>
   <%= render :partial => 'sidebar' %>
 <% end %>
 
-Links from this page go here.
+<ul>
+<% @link_pages.each do |l| %>
+<li><%= link_to l[:pretty], {:controller => 'wiki', :action => 'show', :id => l[:ugly]} %></li>
+<% end %>
+</ul>

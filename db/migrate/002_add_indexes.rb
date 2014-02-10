@@ -1,6 +1,12 @@
 class AddIndexes < ActiveRecord::Migration
   def change
-    add_index :wiki_links, [:wiki_id, :from_page_id]
+    # By wiki, to find all the links in a wiki (useful for finding orphan or wanted pages)
+    add_index :wiki_links, :wiki_id
+
+    # By source page ID, to keep links up to date and find outgoing links
+    add_index :wiki_links, :from_page_id
+
+    # By wiki + destination page, for finding incoming links
     add_index :wiki_links, [:wiki_id, :to_page_name]
   end
 end
