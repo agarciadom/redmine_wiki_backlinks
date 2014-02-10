@@ -4,9 +4,11 @@ require 'set'
 
 class WikiLink < ActiveRecord::Base
   unloadable
+
   belongs_to :wiki
   belongs_to :page, :class_name => 'WikiPage', :foreign_key => 'from_page_id'
-  validates_presence_of :to_page_name
+
+  validates_presence_of :wiki_id, :from_page_id, :to_page_name
 
   def self.update_from_content(content)
     page = content.page
@@ -14,17 +16,16 @@ class WikiLink < ActiveRecord::Base
 
     # Remove the existing links and recreate from all the links we found now
     linked_pages = collect_links(content.text)
-    remove_from_content(content)
+    remove_from_page(page)
     linked_pages.each do |p|
-      link = WikiLink.new(:wiki_id => wiki.id,
-                          :from_page_id => page.id,
+      link = WikiLink.new(:wiki => wiki,
+                          :page => page,
                           :to_page_name => Wiki.titleize(p))
       link.save
     end
   end
 
-  def self.remove_from_content(content)
-    page = content.page
+  def self.remove_from_page(page)
     delete_all(["from_page_id = ?", page.id])
   end
 

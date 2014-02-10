@@ -18,7 +18,7 @@ module WikiLinksWikiContentPatch
     end
 
     def remove_wiki_links
-      WikiLink.remove_from_content(self)
+      WikiLink.remove_from_page(self.page)
     end
   end
 

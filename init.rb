@@ -2,6 +2,9 @@ Rails.configuration.to_prepare do
   unless WikiContent.included_modules.include?(WikiLinksWikiContentPatch)
     WikiContent.send(:include, WikiLinksWikiContentPatch)
   end
+  unless WikiContent.included_modules.include?(WikiLinksWikiPagePatch)
+    WikiPage.send(:include, WikiLinksWikiPagePatch)
+  end
 end
 
 Redmine::Plugin.register :wiki_links do
