@@ -10,7 +10,6 @@ class WikiLinksController < ApplicationController
   before_filter :only => [:links_from, :links_to, :orphan, :wanted]
 
   def links_from
-    # Make sure this page exists
     @page = @project.wiki.pages.find_by_title(params[:page_id])
 
     # We prettify the title without loading the page itself,
@@ -23,7 +22,6 @@ class WikiLinksController < ApplicationController
   end
 
   def links_to
-    # Make sure this page exists
     @page = @project.wiki.pages.find_by_title(params[:page_id])
 
     # Obtain the ids of all the pages that link to this one
