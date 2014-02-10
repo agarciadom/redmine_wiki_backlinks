@@ -6,6 +6,6 @@
 
 <ul>
 <% @link_pages.each do |l| %>
-<li><%= link_to l[:pretty], {:controller => 'wiki', :action => 'show', :id => l[:ugly]} %></li>
+<li><%= link_to l[:pretty].html_safe, {:controller => 'wiki', :action => 'show', :id => l[:ugly]} %></li>
 <% end %>
 </ul>

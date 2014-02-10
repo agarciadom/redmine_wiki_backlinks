@@ -1,3 +1,5 @@
+require 'set'
+
 class WikiLinksController < ApplicationController
   unloadable
 
@@ -27,12 +29,8 @@ class WikiLinksController < ApplicationController
     # Obtain the ids of all the pages that link to this one
     ids_to = WikiLink.where(:wiki_id => @project.wiki.id)
                      .where(:to_page_name => Wiki.titleize(@page.title))
-                     .select(:from_page_id)
-                     .all
-                     .collect{|x| x[:from_page_id]}
-
-    # Remove repetitions
-    ids_to = Set.new(ids_to).to_a
+                     .select("DISTINCT from_page_id")
+                     .map(&:from_page_id)
 
     # Collect the pretty and ugly titles and sort by pretty title
     @link_pages = WikiPage.select(:title)
@@ -42,14 +40,31 @@ class WikiLinksController < ApplicationController
   end
 
   def orphan
-    # nothing for now!
+    @link_pages = (_available_pages(@project.wiki) - _existing_targets(@project.wiki))
+      .collect{|x| _title_versions(x)}
+      .sort{|x, y| x[:pretty] <=> y[:pretty]}
   end
 
   def wanted
-    # nothing for now!
+    @link_pages = (_existing_targets(@project.wiki) - _available_pages(@project.wiki))
+      .collect{|x| _title_versions(x)}
+      .sort{|x, y| x[:pretty] <=> y[:pretty]}
+  end
+
+  # private area
+
+  def _existing_targets(wiki)
+    WikiLink.where(:wiki_id => @project.wiki.id)
+      .select("DISTINCT to_page_name")
+      .map(&:to_page_name).to_set
+  end
+
+  def _available_pages(wiki)
+    wiki.pages.select("DISTINCT title").map(&:title).to_set
   end
 
   def _title_versions(title)
     { :pretty => title.tr('_', ' '), :ugly => title }
   end
+
 end
