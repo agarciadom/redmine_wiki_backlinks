@@ -1,7 +1,11 @@
-<h2><%= l(:label_orphan) %></h2>
+<h2><%= l(:label_wanted) %></h2>
 
 <% content_for :sidebar do %>
   <%= render :partial => 'sidebar' %>
+<% end %>
+
+<% if @link_pages.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
 <% end %>
 
 <ul>

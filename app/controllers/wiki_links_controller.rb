@@ -39,6 +39,7 @@ class WikiLinksController < ApplicationController
 
   def orphan
     @link_pages = (_available_pages(@project.wiki) - _existing_targets(@project.wiki))
+      .delete(@project.wiki.start_page)
       .collect{|x| _title_versions(x)}
       .sort{|x, y| x[:pretty] <=> y[:pretty]}
   end
