@@ -1,0 +1,13 @@
+# English strings go here for Rails i18n
+es:
+  wiki_links_from_here: "Páginas desde aquí"
+  wiki_links_to_here: "Páginas hacia aquí"
+  wiki_links_orphan_pages: "Páginas huérfanas"
+  wiki_links_wanted_pages: "Páginas deseadas"
+
+  label_links_from: "Páginas accesibles desde %{value}"
+  label_links_to: "Páginas con enlaces a %{value}"
+  label_orphan: "Listado de páginas huérfanas"
+  label_wanted: "Listado de páginas deseadas"
+
+  permission_view_wiki_links: "Ver enlaces del wiki"
