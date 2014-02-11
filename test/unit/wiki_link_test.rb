@@ -94,25 +94,39 @@ class WikiLinkTest < ActiveSupport::TestCase
   end
 
   def test_populate_destroy_page_auto
-    # Create a new wiki page with a link
-    new_page = WikiPage.new(:wiki => @wiki, :title => 'New_page')
-    new_content = WikiContent.new(:page => new_page,
-                                  :text => 'This is a [[new link]]')
-    assert new_page.save_with_content(new_content)
-
-    # Reload to pick up the information produced by the callbacks
-    new_page.reload
-
-    # A new link should have been created
-    assert_equal new_page.links_from.first.to_page_title, "New_link"
-    assert !WikiLink.where(:from_page_id => new_page.id).all.empty?
-
-    # After the page is destroyed, the link should not exist anymore
+    new_page = populate_wiki
     new_page.destroy
     assert WikiLink.where(:from_page_id => new_page.id).all.empty?
   end
 
   def test_populate_destroy_content_auto
+    new_page = populate_wiki
+    new_page.content.destroy
+    assert WikiLink.where(:from_page_id => new_page.id).all.empty?
+  end
+
+  def test_populate_destroy_wiki_auto
+    new_page = populate_wiki
+    @wiki.destroy
+    assert WikiLink.where(:from_page_id => new_page.id).all.empty?
+  end
+
+  def test_populate_update_content_auto
+    new_page = populate_wiki
+
+    # Change the content, save and reload
+    new_page.content.text = "Here is [[another link]]"
+    assert new_page.content.save
+    new_page.reload
+
+    # There should only be the new link
+    assert_equal new_page.links_from.first.to_page_title,
+                 "Another_link", "There should only be the new link"
+  end
+
+  private
+
+  def populate_wiki
     # Create a new wiki page with a link
     new_page = WikiPage.new(:wiki => @wiki, :title => 'New_page')
     new_content = WikiContent.new(:page => new_page,
@@ -126,27 +140,7 @@ class WikiLinkTest < ActiveSupport::TestCase
     assert_equal new_page.links_from.first.to_page_title, "New_link"
     assert !WikiLink.where(:from_page_id => new_page.id).all.empty?
 
-    # After the page is destroyed, the link should not exist anymore
-    new_content.destroy
-    assert WikiLink.where(:from_page_id => new_page.id).all.empty?
-  end
-
-  def test_populate_update_content_auto
-    # Create a new wiki page with a link
-    new_page = WikiPage.new(:wiki => @wiki, :title => 'New_page')
-    new_content = WikiContent.new(:page => new_page,
-                                  :text => 'This is a [[new link]]')
-    assert new_page.save_with_content(new_content)
-    new_page.reload
-
-    # Change the content, save and reload
-    new_content.text = "Here is [[another link]]"
-    assert new_content.save
-    new_page.reload
-
-    # There should only be the new link
-    assert_equal new_page.links_from.first.to_page_title,
-                 "Another_link", "There should only be the new link"
+    new_page
   end
 
 end
