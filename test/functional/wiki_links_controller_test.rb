@@ -17,10 +17,7 @@ class WikiLinksControllerTest < ActionController::TestCase
   end
 
   def test_links_from_noauth_login
-    get :links_from, {
-      :project_id => @project.id,
-      :page_id => @page.id
-    }
+    get :links_from, { :project_id => @project.id, :page_id => @page.title }
 
     # user is sent to /login
     assert_response :redirect
@@ -28,12 +25,7 @@ class WikiLinksControllerTest < ActionController::TestCase
 
   def test_links_from_auth_forbidden
     login_as "jsmith"
-
-    get :links_from, {
-      :project_id => @project.id,
-      :page_id => @page.id
-    }
-
+    get :links_from, {:project_id => @project.id, :page_id => @page.title }
     assert_response 403
   end
 
@@ -73,8 +65,7 @@ class WikiLinksControllerTest < ActionController::TestCase
     }
 
     assert_response :success
-    assert_equal [{"pretty" => "A page", "ugly" => "A_page"},
-                  {"pretty" => "Page", "ugly" => "Page"}], assigns(:link_pages)
+    assert_equal ["A_page", "Page"], assigns(:link_pages)
     assert_select "ul.wiki_links > li", 2
   end
 
@@ -136,7 +127,7 @@ class WikiLinksControllerTest < ActionController::TestCase
     }
 
     assert_response :success
-    assert_equal [{"pretty" => @page.title, "ugly" => @page.title}], assigns(:link_pages)
+    assert_equal [@page.title], assigns(:link_pages)
     assert_select "ul.wiki_links > li", 1
   end
 
@@ -174,7 +165,7 @@ class WikiLinksControllerTest < ActionController::TestCase
     get :orphan, :project_id => @project.id
 
     assert_response :success
-    assert_equal [{"ugly" => "Orphan", "pretty"=> "Orphan"}], assigns(:link_pages)
+    assert_equal ["Orphan"], assigns(:link_pages)
     assert_select "ul.wiki_links > li", 1
   end
 
@@ -210,7 +201,7 @@ class WikiLinksControllerTest < ActionController::TestCase
 
     get :wanted, :project_id => @project.id
     assert_response :success
-    assert_equal [{"ugly" => "Something", "pretty" =>"Something"}], assigns(:link_pages)
+    assert_equal ["Something"], assigns(:link_pages)
     assert_select "ul.wiki_links > li", 1
   end
 
