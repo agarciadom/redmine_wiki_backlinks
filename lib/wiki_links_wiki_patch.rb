@@ -14,7 +14,16 @@ module WikiLinksWikiPatch
 
   module InstanceMethods
     def remove_wiki_links
-      self.links.delete_all
+      self.links.destroy_all
+    end
+
+    def parse_all_pages
+      transaction do
+        remove_wiki_links
+        self.pages.all.each do |p|
+          WikiLink.add_from_page(self, p, p.content)
+        end
+      end
     end
   end
 

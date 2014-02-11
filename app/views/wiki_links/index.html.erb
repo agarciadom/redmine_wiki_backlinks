@@ -1,0 +1,17 @@
+<h2><%= l(:label_admin_wiki_links) %></h2>
+
+<%= form_tag(url_for(:action => 'parse'), method: 'post', id: 'projectwikis-form') do %>
+<fieldset class="box">
+  <legend><%= l(:legend_parse) %></legend>
+  <% @project_wikis.each do |w| %>
+  <p>
+    <label>
+      <%= check_box_tag 'parse_wikis[]', w["wiki_id"], false %>
+      <%= w["project_name"] %>
+    </label>
+  </p>
+  <% end %>
+</fieldset>
+<p><%= check_all_links 'projectwikis-form' %></p>
+<p><%= submit_tag l(:button_parse) %></p>
+<% end %>

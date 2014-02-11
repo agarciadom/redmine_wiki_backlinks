@@ -9,5 +9,12 @@ en:
   label_links_to: "Links to %{value}"
   label_orphan: "Orphan pages"
   label_wanted: "Wanted pages"
+  label_admin_wiki_links: "Wiki links"
 
   permission_view_wiki_links: "View wiki links"
+
+  button_parse: "Parse"
+  flash_parse_none: "No wikis were selected"
+  flash_parse_notfound: "Could not find one of the specified wikis"
+  flash_parse_ok: "Parsed #{nwikis} wikis successfully"
+  legend_parse: "Project wikis to be parsed"

@@ -1,3 +1,5 @@
+require 'wiki_links_hook_listener'
+
 Rails.configuration.to_prepare do
   unless WikiContent.included_modules.include?(WikiLinksWikiContentPatch)
     WikiContent.send(:include, WikiLinksWikiContentPatch)
@@ -24,4 +26,12 @@ Redmine::Plugin.register :wiki_links do
       :wiki_links => [:links_to, :links_from,:orphan, :wanted]
     }, :read => true
   end
+
+  requires_redmine :version_or_higher => '2.2'
+
+  menu :admin_menu,
+       :wiki_links,
+       { :controller => 'wiki_links', :action => 'index'},
+       :caption => :label_admin_wiki_links
+
 end

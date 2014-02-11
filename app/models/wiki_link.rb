@@ -13,10 +13,16 @@ class WikiLink < ActiveRecord::Base
   def self.update_from_content(content)
     page = content.page
     wiki = page.wiki
+    update_from_full(wiki, page, content)
+  end
 
-    # Remove the existing links and recreate from all the links we found now
-    linked_pages = collect_links(content.text)
+  def self.update_from_full(wiki, page, content)
     remove_from_page(page)
+    add_from_page(wiki, page, content)
+  end
+
+  def self.add_from_page(wiki, page, content)
+    linked_pages = collect_links(content.text)
     linked_pages.each do |p|
       link = WikiLink.new(:wiki => wiki,
                           :page => page,

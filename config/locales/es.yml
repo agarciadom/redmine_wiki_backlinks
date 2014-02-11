@@ -9,5 +9,12 @@ es:
   label_links_to: "Páginas con enlaces a %{value}"
   label_orphan: "Listado de páginas huérfanas"
   label_wanted: "Listado de páginas deseadas"
+  label_admin_wiki_links: "Enlaces de wikis"
 
   permission_view_wiki_links: "Ver enlaces del wiki"
+
+  button_parse: "Analizar"
+  flash_parse_none: "No se seleccionó ningún wiki"
+  flash_parse_notfound: "No se encontró uno de los wikis indicados"
+  flash_parse_ok: "Analizado con éxito %{nwikis} wiki(s)"
+  legend_parse: "Proyectos con wikis a analizar"
