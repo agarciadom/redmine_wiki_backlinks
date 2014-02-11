@@ -7,7 +7,7 @@ module WikiLinksWikiPagePatch
     base.class_eval do
       unloadable
 
-      has_many :wiki_links, :foreign_key => 'from_page_id'
+      has_many :links_from, :class_name => 'WikiLink', :foreign_key => 'from_page_id'
       after_destroy :remove_wiki_links
     end
   end

@@ -2,16 +2,18 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class WikiLinksControllerTest < ActionController::TestCase
   fixtures :projects, :enabled_modules,
-           :users, :members, :member_roles, :roles,
-           :wikis
+           :users, :members, :member_roles, :roles
 
   def setup
     @project = Project.find(1)
-    @wiki = @project.wiki
-
-    @page = add_page @wiki, 'Wiki', 'Start here'
-    @wiki.start_page = @page.title
+    @wiki = Wiki.new(:project => Project.find(1))
+    @wiki.start_page = 'Wiki'
     assert @wiki.save
+
+    @project.wiki = @wiki
+    assert @project.save
+
+    @page = add_page @wiki, @wiki.start_page
   end
 
   def test_links_from_noauth_login
@@ -46,6 +48,18 @@ class WikiLinksControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal assigns(:link_pages), []
     assert_select "p.nodata", 1
+  end
+
+  def test_links_from_noauth_public_missing_project
+    role_allow "Anonymous", :view_wiki_links
+    get :links_from, {:project_id => 'missing', :page_id => @page.title }
+    assert_response :missing
+  end
+
+  def test_links_from_noauth_public_missing_page
+    role_allow "Anonymous", :view_wiki_links
+    get :links_from, {:project_id => @project.id, :page_id => 'Missing'}
+    assert_response :missing
   end
 
   def test_links_from_noauth_public_two
@@ -97,6 +111,18 @@ class WikiLinksControllerTest < ActionController::TestCase
     assert_select "p.nodata", 1
   end
 
+  def test_links_to_noauth_public_missing_project
+    role_allow "Anonymous", :view_wiki_links
+    get :links_to, {:project_id => 'missing', :page_id => @page.title}
+    assert_response :missing
+  end
+
+  def test_links_to_noauth_public_missing_page
+    role_allow "Anonymous", :view_wiki_links
+    get :links_to, {:project_id => @project.id, :page_id => 'Missing'}
+    assert_response :missing
+  end
+
   def test_links_to_noauth_public_empty
     role_allow "Manager", :view_wiki_links
     login_as "jsmith"
@@ -134,6 +160,12 @@ class WikiLinksControllerTest < ActionController::TestCase
     assert_select "p.nodata", 1
   end
 
+  def test_orphan_noauth_public_missing_project
+    role_allow "Anonymous", :view_wiki_links
+    get :orphan, :project_id => 'Missing'
+    assert_response :missing
+  end
+
   def test_orphan_auth_notempty
     role_allow "Manager", :view_wiki_links
     login_as "jsmith"
@@ -163,6 +195,12 @@ class WikiLinksControllerTest < ActionController::TestCase
     assert_response :success
     assert_equal [], assigns(:link_pages)
     assert_select "p.nodata", 1
+  end
+
+  def test_wanted_noauth_public_missing_project
+    role_allow "Anonymous", :view_wiki_links
+    get :wanted, :project_id => 'Missing'
+    assert_response :missing
   end
 
   def test_wanted_auth_notempty

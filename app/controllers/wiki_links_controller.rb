@@ -10,7 +10,7 @@ class WikiLinksController < ApplicationController
   before_filter :only => [:links_from, :links_to, :orphan, :wanted]
 
   def links_from
-    @page = @project.wiki.pages.find_by_title(params[:page_id])
+    @page = @project.wiki.pages.find_by_title!(params[:page_id])
 
     # We prettify the title without loading the page itself,
     # and then sort by the pretty title.
@@ -22,10 +22,12 @@ class WikiLinksController < ApplicationController
 
     @page_header = l(:label_links_from, :value => @page.pretty_title)
     render "link_list"
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
 
   def links_to
-    @page = @project.wiki.pages.find_by_title(params[:page_id])
+    @page = @project.wiki.pages.find_by_title!(params[:page_id])
 
     # Obtain the ids of all the pages that link to this one
     ids_to = WikiLink.where(:wiki_id => @project.wiki.id)
@@ -41,6 +43,8 @@ class WikiLinksController < ApplicationController
 
     @page_header = l(:label_links_to, :value => @page.pretty_title)
     render "link_list"
+  rescue ActiveRecord::RecordNotFound
+    render_404
   end
 
   def orphan

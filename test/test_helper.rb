@@ -13,3 +13,7 @@ def update_page(page, text)
   page.content.save
   page
 end
+
+def logger
+  Rails::logger
+end

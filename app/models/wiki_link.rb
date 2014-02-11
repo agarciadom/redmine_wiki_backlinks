@@ -21,12 +21,12 @@ class WikiLink < ActiveRecord::Base
       link = WikiLink.new(:wiki => wiki,
                           :page => page,
                           :to_page_title => Wiki.titleize(p))
-      link.save
+      link.save or raise "Could not save link from #{page.title} to #{p}"
     end
   end
 
   def self.remove_from_page(page)
-    delete_all(["from_page_id = ?", page.id])
+    page.links_from.destroy_all
   end
 
   def self.collect_links(text)

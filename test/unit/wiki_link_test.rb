@@ -2,12 +2,14 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class WikiLinkTest < ActiveSupport::TestCase
   fixtures :projects, :enabled_modules,
-           :users, :members, :member_roles, :roles,
-           :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions
+           :users, :members, :member_roles, :roles
 
   def setup
-    @wiki = Wiki.find(1)
-    @page = @wiki.pages.first
+    @wiki = Wiki.new(:project => Project.find(1))
+    @wiki.start_page = 'Wiki'
+    assert @wiki.save
+
+    @page = add_page @wiki, @wiki.start_page
   end
 
   # Creation of instances
@@ -83,11 +85,12 @@ class WikiLinkTest < ActiveSupport::TestCase
 
   def test_populate_remove_manual
     @page = WikiPage.find(1)
+    @page.content.text = 'Here is some [[documentation]]'
     WikiLink.update_from_content(@page.content)
-    assert_equal @page.wiki_links.first.to_page_title, "Documentation"
+    assert_equal @page.links_from.first.to_page_title, "Documentation"
 
     WikiLink.remove_from_page(@page)
-    assert @page.wiki_links.all.empty?
+    assert @page.links_from.all.empty?
   end
 
   def test_populate_destroy_page_auto
@@ -95,10 +98,13 @@ class WikiLinkTest < ActiveSupport::TestCase
     new_page = WikiPage.new(:wiki => @wiki, :title => 'New_page')
     new_content = WikiContent.new(:page => new_page,
                                   :text => 'This is a [[new link]]')
-    assert new_content.save
+    assert new_page.save_with_content(new_content)
+
+    # Reload to pick up the information produced by the callbacks
+    new_page.reload
 
     # A new link should have been created
-    assert_equal new_page.wiki_links.first.to_page_title, "New_link"
+    assert_equal new_page.links_from.first.to_page_title, "New_link"
     assert !WikiLink.where(:from_page_id => new_page.id).all.empty?
 
     # After the page is destroyed, the link should not exist anymore
@@ -111,10 +117,13 @@ class WikiLinkTest < ActiveSupport::TestCase
     new_page = WikiPage.new(:wiki => @wiki, :title => 'New_page')
     new_content = WikiContent.new(:page => new_page,
                                   :text => 'This is a [[new link]]')
-    assert new_content.save
+    assert new_page.save_with_content(new_content)
+
+    # Reload to pick up the information produced by the callbacks
+    new_page.reload
 
     # A new link should have been created
-    assert_equal new_page.wiki_links.first.to_page_title, "New_link"
+    assert_equal new_page.links_from.first.to_page_title, "New_link"
     assert !WikiLink.where(:from_page_id => new_page.id).all.empty?
 
     # After the page is destroyed, the link should not exist anymore
@@ -127,14 +136,16 @@ class WikiLinkTest < ActiveSupport::TestCase
     new_page = WikiPage.new(:wiki => @wiki, :title => 'New_page')
     new_content = WikiContent.new(:page => new_page,
                                   :text => 'This is a [[new link]]')
-    assert new_content.save
+    assert new_page.save_with_content(new_content)
+    new_page.reload
 
-    # Change the content and save
+    # Change the content, save and reload
     new_content.text = "Here is [[another link]]"
     assert new_content.save
+    new_page.reload
 
     # There should only be the new link
-    assert_equal new_page.wiki_links.first.to_page_title,
+    assert_equal new_page.links_from.first.to_page_title,
                  "Another_link", "There should only be the new link"
   end
 
