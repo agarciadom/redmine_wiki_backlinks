@@ -15,10 +15,10 @@ class WikiLinksController < ApplicationController
     # We prettify the title without loading the page itself,
     # and then sort by the pretty title.
     @link_pages = WikiLink.where(:from_page_id => @page.id)
-                          .select(:to_page_title)
-                          .all
-                          .collect{|x| _title_versions(x[:to_page_title])}
-                          .sort{|x, y| x[:pretty] <=> y[:pretty]}
+      .select(:to_page_title)
+      .all
+      .collect{|x| _title_versions(x[:to_page_title])}
+      .sort{|x, y| x[:pretty] <=> y[:pretty]}
 
     @page_header = l(:label_links_from, :value => @page.pretty_title)
     render "link_list"
@@ -31,15 +31,15 @@ class WikiLinksController < ApplicationController
 
     # Obtain the ids of all the pages that link to this one
     ids_to = WikiLink.where(:wiki_id => @project.wiki.id)
-                     .where(:to_page_title => Wiki.titleize(@page.title))
-                     .select("DISTINCT from_page_id")
-                     .map(&:from_page_id)
+      .where(:to_page_title => Wiki.titleize(@page.title))
+      .select("DISTINCT from_page_id")
+      .map(&:from_page_id)
 
     # Collect the pretty and ugly titles and sort by pretty title
     @link_pages = WikiPage.select(:title)
-                          .find(ids_to)
-                          .collect{|x| _title_versions(x.title)}
-                          .sort{|x, y| x[:pretty] <=> y[:pretty]}
+      .find(ids_to)
+      .collect{|x| _title_versions(x.title)}
+      .sort{|x, y| x[:pretty] <=> y[:pretty]}
 
     @page_header = l(:label_links_to, :value => @page.pretty_title)
     render "link_list"
