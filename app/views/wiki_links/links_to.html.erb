@@ -1,7 +1,7 @@
 <h2><%= l(:label_links_to, :value => @page.pretty_title) %></h2>
 
 <% content_for :sidebar do %>
-  <%= render :partial => 'sidebar' %>
+  <%= render :partial => 'wiki/sidebar' %>
 <% end %>
 
 <% if @link_pages.empty? %>

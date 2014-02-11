@@ -4,8 +4,8 @@
 
 <h3><%= l(:label_wiki) %></h3>
 <ul>
-  <li><%= link_to(l(:field_start_page), {:action => 'show', :id => nil}) %></li>
-  <li><%= link_to(l(:label_index_by_title), {:action => 'index'}) %></li>
+  <li><%= link_to(l(:field_start_page), {:controller => 'wiki', :action => 'show', :id => nil}) %></li>
+  <li><%= link_to(l(:label_index_by_title), {:controller => 'wiki', :action => 'index'}) %></li>
   <li><%= link_to(l(:label_index_by_date),
                   {:controller => 'wiki', :project_id => @project,
                    :action => 'date_index'}) %></li>
