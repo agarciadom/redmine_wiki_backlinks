@@ -12,7 +12,7 @@ Rails.configuration.to_prepare do
   end
 end
 
-Redmine::Plugin.register :wiki_links do
+Redmine::Plugin.register :redmine_wiki_backlinks do
   name 'Wiki Links plugin'
   author 'Antonio Garcia-Dominguez'
   description 'Wiki link management for Redmine'
