@@ -3,7 +3,7 @@
 <%= form_tag(url_for(:action => 'parse'), method: 'post', id: 'projectwikis-form') do %>
 <fieldset class="box">
   <legend><%= l(:legend_parse) %></legend>
-  <% @project_wikis.each do |w| %>
+  <% @project_wikis.sort_by{|x, y| x["project_name"] <=> y["project_name"]}.each do |w| %>
   <p>
     <label>
       <%= check_box_tag 'parse_wikis[]', w["wiki_id"], false %>
