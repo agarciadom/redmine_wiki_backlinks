@@ -13,11 +13,11 @@ Rails.configuration.to_prepare do
 end
 
 Redmine::Plugin.register :redmine_wiki_backlinks do
-  name 'Wiki Links plugin'
+  name 'Redmine Wiki Backlinks plugin'
   author 'Antonio Garcia-Dominguez'
-  description 'Wiki link management for Redmine'
+  description 'Provides reports with backlinks, orphan pages and wanted pages for Redmine wikis'
   version '0.0.1'
-  url 'http://github.com/bluezio/wiki_links'
+  url 'http://github.com/bluezio/redmine_wiki_backlinks'
   author_url 'http://neptuno.uca.es/~agarcia'
 
   # Add the permission to the Wiki module
