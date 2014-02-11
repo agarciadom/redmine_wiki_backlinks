@@ -19,6 +19,9 @@ class WikiLinksController < ApplicationController
                           .all
                           .collect{|x| _title_versions(x[:to_page_title])}
                           .sort{|x, y| x[:pretty] <=> y[:pretty]}
+
+    @page_header = l(:label_links_from, :value => @page.pretty_title)
+    render "link_list"
   end
 
   def links_to
@@ -35,6 +38,9 @@ class WikiLinksController < ApplicationController
                           .find(ids_to)
                           .collect{|x| _title_versions(x.title)}
                           .sort{|x, y| x[:pretty] <=> y[:pretty]}
+
+    @page_header = l(:label_links_to, :value => @page.pretty_title)
+    render "link_list"
   end
 
   def orphan
@@ -42,12 +48,18 @@ class WikiLinksController < ApplicationController
       .delete(@project.wiki.start_page)
       .collect{|x| _title_versions(x)}
       .sort{|x, y| x[:pretty] <=> y[:pretty]}
+
+    @page_header = l(:label_orphan)
+    render "link_list"
   end
 
   def wanted
     @link_pages = (_existing_targets(@project.wiki) - _available_pages(@project.wiki))
       .collect{|x| _title_versions(x)}
       .sort{|x, y| x[:pretty] <=> y[:pretty]}
+
+    @page_header = l(:label_wanted)
+    render "link_list"
   end
 
   # private area
