@@ -10,11 +10,13 @@
                   {:controller => 'wiki', :project_id => @project,
                    :action => 'date_index'}) %></li>
 
+  <% if User.current.allowed_to? :view_wiki_links, @project %>
   <% if @page %>
   <li><%= link_to l(:wiki_links_from_here),    {:controller => "wiki_links", :action => "links_from", :project_id => @project, :page_id => @page.title } %></li>
   <li><%= link_to l(:wiki_links_to_here),      {:controller => "wiki_links", :action => "links_to", :project_id => @project, :page_id => @page.title } %></li>
   <% end %>
   <li><%= link_to l(:wiki_links_orphan_pages), {:controller => "wiki_links", :action => "orphan", :project_id => @project } %></li>
   <li><%= link_to l(:wiki_links_wanted_pages), {:controller => "wiki_links", :action => "wanted", :project_id => @project } %></li>
+  <% end %>
 
 </ul>
