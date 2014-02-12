@@ -205,6 +205,35 @@ class WikiLinksControllerTest < ActionController::TestCase
     assert_select "ul.wiki_links > li", 1
   end
 
+  def test_index_noauth_login
+    get :index
+    assert_response :redirect
+  end
+
+  def test_index_notadmin_forbidden
+    login_as "jsmith"
+    get :index
+    assert_response 403
+  end
+
+  def test_index_admin_empty
+    @wiki.destroy
+
+    login_as "admin"
+    get :index
+    assert_response :success
+    assert_equal [], assigns(:project_wikis)
+    assert_select "p.nodata", 1
+  end
+
+  def test_index_admin_one
+    login_as "admin"
+    get :index
+    assert_response :success
+    assert_equal [{"wiki_id" => @wiki.id, "project_name" => @project.name}], assigns(:project_wikis)
+    assert_select "#projectwikis-form label", 1
+  end
+
   # PRIVATE ####################################################################
 
   def login_as(login)

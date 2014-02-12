@@ -1,9 +1,12 @@
 <h2><%= l(:label_admin_wiki_links) %></h2>
 
+<% if @project_wikis.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
 <%= form_tag(url_for(:action => 'parse'), method: 'post', id: 'projectwikis-form') do %>
 <fieldset class="box">
   <legend><%= l(:legend_parse) %></legend>
-  <% @project_wikis.sort_by{|x, y| x["project_name"] <=> y["project_name"]}.each do |w| %>
+  <% @project_wikis.sort{|x, y| x["project_name"] <=> y["project_name"]}.each do |w| %>
   <p>
     <label>
       <%= check_box_tag 'parse_wikis[]', w["wiki_id"], false %>
@@ -14,4 +17,5 @@
 </fieldset>
 <p><%= check_all_links 'projectwikis-form' %></p>
 <p><%= submit_tag l(:button_parse) %></p>
+<% end %>
 <% end %>

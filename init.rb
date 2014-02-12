@@ -16,7 +16,7 @@ Redmine::Plugin.register :redmine_wiki_backlinks do
   name 'Redmine Wiki Backlinks plugin'
   author 'Antonio Garcia-Dominguez'
   description 'Provides reports with backlinks, orphan pages and wanted pages for Redmine wikis'
-  version '0.0.1'
+  version '0.0.2'
   url 'http://github.com/bluezio/redmine_wiki_backlinks'
   author_url 'http://neptuno.uca.es/~agarcia'
 
