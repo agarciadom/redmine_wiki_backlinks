@@ -1,0 +1,20 @@
+# Czech strings go here for Rails i18n
+cs:
+  wiki_links_from_here: "Odkazy z této stránky"
+  wiki_links_to_here: "Odkazy odkazující na tuto stránku"
+  wiki_links_orphan_pages: "Stránky, na které nevedou žádné odkazy"
+  wiki_links_wanted_pages: "Zamýšlené stránky"
+
+  label_links_from: "Odkazy z %{value}"
+  label_links_to: "Odkazy od %{value}"
+  label_orphan: "Stránky, na které nevedou žádné odkazy"
+  label_wanted: "Zamýšlené stránky"
+  label_admin_wiki_links: "Wiki links (orphaned...)"
+
+  permission_view_wiki_links: "Zobraz strukturní odkazy (wiki links)"
+
+  button_parse: "Přechroupej"
+  flash_parse_none: "Nebyly zvoleny žádné wiki stránky"
+  flash_parse_notfound: "Nemohu najít jednu ze zvolených stránek"
+  flash_parse_ok: "Úspěšně přechroupáno #{nwikis} wiki stránek"
+  legend_parse: "Projektové wiki stránky k přechroupání"
