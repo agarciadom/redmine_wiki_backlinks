@@ -1,7 +1,7 @@
 # Czech strings go here for Rails i18n
 cs:
   wiki_links_from_here: "Odkazy z této stránky"
-  wiki_links_to_here: "Odkazy odkazující na tuto stránku"
+  wiki_links_to_here: "Stránky odkazující na tuto stránku"
   wiki_links_orphan_pages: "Stránky, na které nevedou žádné odkazy"
   wiki_links_wanted_pages: "Zamýšlené stránky"
 
