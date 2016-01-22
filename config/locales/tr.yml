@@ -1,0 +1,20 @@
+# Turkish strings go here for Rails i18n
+tr:
+  wiki_links_from_here: "Bu sayfadan giden linkler"
+  wiki_links_to_here: "Bu sayfaya gelen linker"
+  wiki_links_orphan_pages: "Gidişi olmayan sayfalar"
+  wiki_links_wanted_pages: "İçeriği olmayan sayfalar"
+
+  label_links_from: "%{value} sayfasından giden linkler"
+  label_links_to: "%{value} sayfasına gelen linkler"
+  label_orphan: "Gidişi olmayan sayfalar"
+  label_wanted: "İçerği olmayan sayfalar"
+  label_admin_wiki_links: "Wiki linkleri"
+
+  permission_view_wiki_links: "wiki linklerini görme"
+
+  button_parse: "Tara"
+  flash_parse_none: "Hiç wiki seçmediniz"
+  flash_parse_notfound: "Seçtiğiniz wikilerden biri bulanamadı"
+  flash_parse_ok: "#{nwikis} adet wiki tarandı"
+  legend_parse: "Taranacak wikileri seçin"
