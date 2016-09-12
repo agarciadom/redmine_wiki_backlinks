@@ -16,5 +16,5 @@ tr:
   button_parse: "Tara"
   flash_parse_none: "Hiç wiki seçmediniz"
   flash_parse_notfound: "Seçtiğiniz wikilerden biri bulanamadı"
-  flash_parse_ok: "#{nwikis} adet wiki tarandı"
+  flash_parse_ok: "%{nwikis} adet wiki tarandı"
   legend_parse: "Taranacak wikileri seçin"

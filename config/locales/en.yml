@@ -16,5 +16,5 @@ en:
   button_parse: "Parse"
   flash_parse_none: "No wikis were selected"
   flash_parse_notfound: "Could not find one of the specified wikis"
-  flash_parse_ok: "Parsed #{nwikis} wikis successfully"
+  flash_parse_ok: "Parsed %{nwikis} wikis successfully"
   legend_parse: "Project wikis to be parsed"

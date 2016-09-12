@@ -16,5 +16,5 @@ cs:
   button_parse: "Přechroupej"
   flash_parse_none: "Nebyly zvoleny žádné wiki stránky"
   flash_parse_notfound: "Nemohu najít jednu ze zvolených stránek"
-  flash_parse_ok: "Úspěšně přechroupáno #{nwikis} wiki stránek"
+  flash_parse_ok: "Úspěšně přechroupáno %{nwikis} wiki stránek"
   legend_parse: "Projektové wiki stránky k přechroupání"
