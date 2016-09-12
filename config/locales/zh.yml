@@ -1,4 +1,5 @@
 # Simplified Chinese strings go here for Rails i18n
+# Made by Steven.W
 zh:
   wiki_links_from_here: "链接于当前页的Wikis"
   wiki_links_to_here: "链接到当前页的Wikis"
