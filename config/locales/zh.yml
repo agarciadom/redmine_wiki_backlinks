@@ -1,0 +1,21 @@
+# Simplified Chinese strings go here for Rails i18n
+# Made by Steven.W
+zh:
+  wiki_links_from_here: "链接于当前页的Wikis"
+  wiki_links_to_here: "链接到当前页的Wikis"
+  wiki_links_orphan_pages: "列出独立页"
+  wiki_links_wanted_pages: "列出关联页"
+
+  label_links_from: "链接于 【%{value}】的Wikis列表"
+  label_links_to: "链接到 【%{value}】的Wikis列表"
+  label_orphan: "独立页"
+  label_wanted: "关联页"
+  label_admin_wiki_links: "Wiki链接"
+
+  permission_view_wiki_links: "查看WIKI链接"
+
+  button_parse: "解析"
+  flash_parse_none: "未选择Wiki。"
+  flash_parse_notfound: "找不到指定的Wikis。"
+  flash_parse_ok: " %{nwikis} Wikis 解析成功"
+  legend_parse: "待解析Wikis的项目"
