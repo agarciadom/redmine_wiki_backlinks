@@ -10,7 +10,7 @@ This a plugin for the [Redmine](http://www.redmine.org) project management tool.
 * For each wiki, all the pages that are not the target of any link (*orphan pages*).
 * For each wiki, all the link targets that do not exist yet (*wanted pages*).
 
-The plugin has been tested with Redmine 2.4, but it should work with Redmine 2.2+, as it is based on the facilities provided by Rails 3.2.
+The plugin has been tested with Redmine 2.4, but it should work with Redmine 2.2+, as it is based on the facilities provided by Rails 3.2. Some users have reported success with Redmine 3.3 as well (see #7).
 
 The plugin is available under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl-2.0.html), version 2 or later.
 
