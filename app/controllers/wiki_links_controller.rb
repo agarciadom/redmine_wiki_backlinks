@@ -6,10 +6,10 @@ class WikiLinksController < ApplicationController
   default_search_scope :wiki_pages
   menu_item :wiki
 
-  before_filter :find_wiki, :except => [:index, :parse]
-  before_filter :find_existing_page, :only => [:links_from, :links_to]
-  before_filter :authorize, :except => [:index, :parse]
-  before_filter :require_admin, :only => [:index, :parse]
+  before_action :find_wiki, :except => [:index, :parse]
+  before_action :find_existing_page, :only => [:links_from, :links_to]
+  before_action :authorize, :except => [:index, :parse]
+  before_action :require_admin, :only => [:index, :parse]
 
   def index
     @project_wikis = Wiki.joins(:project)
