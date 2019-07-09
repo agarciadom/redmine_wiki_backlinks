@@ -1,4 +1,4 @@
-class AddIndexes < ActiveRecord::Migration
+class AddIndexes < ActiveRecord::Migration[5.0]
   def change
     # By wiki, to find all the links in a wiki (useful for finding orphan or wanted pages)
     add_index :wiki_links, :wiki_id

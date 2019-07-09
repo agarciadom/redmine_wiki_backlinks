@@ -1,4 +1,4 @@
-class CreateWikiLinks < ActiveRecord::Migration
+class CreateWikiLinks < ActiveRecord::Migration[5.0]
   def change
     create_table :wiki_links do |t|
       t.integer :wiki_id, :null => false
